@@ -1,13 +1,11 @@
 ---
 layout: post
-title: "Title"
+title: "Hello Procurement"
 published: true
 date: 2026-01-11 07:00:00 -0600
 tags:
-  - Tag1
-  - Tag 2
+  - About
 ---
-## Hello Procurement
 ### Why This Blog Exists
 
 I’m starting this blog as a separate space to focus on something that’s been central to my career from the beginning: procurement and supply chain. 
