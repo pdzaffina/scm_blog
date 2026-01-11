@@ -91,3 +91,5 @@ collections:
     sort_by: title
 
 future: false
+
+theme: creek-jekyll-theme
