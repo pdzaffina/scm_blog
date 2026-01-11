@@ -92,4 +92,4 @@ collections:
 
 future: false
 
-theme: creek-jekyll-theme
+remote_theme: "mmistakes/minimal-mistakes@4.27.3"
