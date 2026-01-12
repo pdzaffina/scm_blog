@@ -12,7 +12,7 @@ layout: page
       </div>
 
       <div class="entry">
-        {{ post.content | truncate: 200 }}
+        {{ post.content | truncatewords: 100 }}
       </div>
 
       {% if post.tags %}
