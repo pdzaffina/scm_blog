@@ -12,9 +12,12 @@ layout: page
       </div>
 
       <div class="entry">
-        {{ post.excerpt | truncatewords: 40 }}
+        {% if post.excerpt and post.excerpt != post.content %}
+          {{ post.excerpt }}
+        {% else %}
+          {{ post.content | truncatewords: 40 }}
+        {% endif %}
       </div>
-
 
       {% if post.tags %}
           <div class="post-tags">
