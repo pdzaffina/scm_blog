@@ -92,3 +92,6 @@ collections:
 
 future: false
 
+excerpt_separator: "<!--more-->"
+
+
