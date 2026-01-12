@@ -15,7 +15,7 @@ layout: page
         {% if post.excerpt and post.excerpt != post.content %}
           {{ post.excerpt }}
         {% else %}
-          {{ post.content | truncatewords: 40 }}
+          {{ post.content | truncatewords: 50 }}
         {% endif %}
       </div>
 
