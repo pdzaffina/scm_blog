@@ -12,7 +12,6 @@ tags:
 I’m starting this blog as a separate space to focus on something that’s been central to my career from the beginning: procurement and supply chain. 
 
 I began my career on active duty as an artillery officer, where I learned, often the hard way, the value of logistics and disciplined supply chains. After leaving active duty, I joined the Army Reserves as a logistics officer, which deepened that lesson by putting me closer to planning, sustainment, and execution.
-<!--more-->
 
 From there, I entered manufacturing as a Six Sigma Black Belt, working directly with procurement and supply chain teams to improve flow, cost, and operational outcomes.
 
