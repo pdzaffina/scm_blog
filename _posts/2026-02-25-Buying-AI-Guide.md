@@ -2,6 +2,9 @@
 layout: post
 title: "AI Procurement Done Right: Lessons from the Buying AI Guide"
 published: true
+tags:
+  - Buying Guide
+  - Tools
 ---
 Public sector AI procurement is messy. The hype cycle moves faster than policy, vendors promise transformation, and internal governance rarely keeps pace. That is what makes the [Buying AI Guide](https://buyingai.open-contracting.org/) from the Open Contracting Partnership such a useful and timely contribution.
 
