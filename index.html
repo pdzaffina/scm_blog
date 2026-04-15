@@ -1,36 +1,648 @@
 ---
 layout: page
 ---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>International Procurement Day 2026 - Celebrate Excellence</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<div class="posts">
-  {% for post in site.posts %}
-    <article class="post">
+        :root {
+            --kelly-green: #4A7C59;
+            --kelly-dark: #355C3F;
+            --kelly-light: #6BA876;
+            --accent: #FFD700;
+            --bg-dark: #1a1a1a;
+            --text-light: #f5f5f5;
+        }
 
-      <h1><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h1>
-      <div class="date">
-        {{ post.date | date: "%B %e, %Y" }}
-      </div>
+        html {
+            scroll-behavior: smooth;
+        }
 
-      <div class="entry">
-        {% if post.excerpt and post.excerpt != post.content %}
-          {{ post.excerpt }}
-        {% else %}
-          {{ post.content | truncatewords: 50 }}&nbsp;<a href="{{ site.baseurl }}{{ post.url }}" class="read-more">Read more →</a>
-        {% endif %}
-      </div>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #2a1a1f 100%);
+            color: var(--text-light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
 
-      {% if post.tags %}
-          <div class="post-tags">
-            <strong>Tags:</strong>
-            {% for tag in post.tags %}
-            <a href="{{ site.baseurl }}/tags/#{{ tag | slugify }}">{{ tag }}</a>{% unless forloop.last %}, {% endunless %}
-            {% endfor %}
-          </div>
-        {% endif %}
+        /* HERO SECTION */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 2rem;
+        }
 
-      <br>
-      
-      <a href="{{ site.baseurl }}{{ post.url }}" class="read-more">Read More</a>
-    </article>
-  {% endfor %}
-</div>
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 400%;
+            height: 400%;
+            top: -50%;
+            left: -50%;
+            background: radial-gradient(circle, rgba(74, 124, 89, 0.15) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: drift 20s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes drift {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(50px, 50px);
+            }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 900px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 8vw, 5rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+            letter-spacing: -2px;
+            animation: slideInUp 1s ease-out;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--kelly-green) 0%, var(--kelly-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            color: var(--kelly-light);
+            margin-bottom: 2rem;
+            animation: slideInUp 1s ease-out 0.2s both;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .date-badge {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--kelly-green), var(--kelly-light));
+            border: 2px solid var(--accent);
+            border-radius: 50px;
+            margin: 2rem 0;
+            animation: slideInUp 1s ease-out 0.4s both;
+            font-weight: 700;
+            font-size: 1.3rem;
+            box-shadow: 0 10px 40px rgba(74, 124, 89, 0.2);
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: var(--kelly-green);
+            color: var(--text-light);
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            animation: slideInUp 1s ease-out 0.6s both;
+            box-shadow: 0 15px 35px rgba(74, 124, 89, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 50px rgba(74, 124, 89, 0.4);
+            background: var(--kelly-dark);
+        }
+
+        .cta-button:active {
+            transform: translateY(-1px);
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* CONFETTI ANIMATION */
+        .confetti {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* WHY CELEBRATE SECTION */
+        .section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            text-align: center;
+            margin-bottom: 3rem;
+            font-weight: 900;
+        }
+
+        .section-title span {
+            color: var(--kelly-green);
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: linear-gradient(135deg, rgba(74, 124, 89, 0.5), rgba(74, 124, 89, 0.3));
+            border: 2px solid var(--kelly-light);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(74, 124, 89, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(74, 124, 89, 0.2);
+            border-color: var(--kelly-green);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--kelly-light);
+        }
+
+        .card-text {
+            color: rgba(245, 245, 245, 0.8);
+            line-height: 1.8;
+        }
+
+        /* PROFESSIONALS SPOTLIGHT */
+        .spotlight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .professional-badge {
+            background: linear-gradient(135deg, var(--kelly-green), var(--kelly-light));
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: popIn 0.5s ease-out;
+        }
+
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .professional-badge:nth-child(1) {
+            animation-delay: 0s;
+        }
+        .professional-badge:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+        .professional-badge:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+        .professional-badge:nth-child(4) {
+            animation-delay: 0.3s;
+        }
+        .professional-badge:nth-child(5) {
+            animation-delay: 0.4s;
+        }
+        .professional-badge:nth-child(6) {
+            animation-delay: 0.5s;
+        }
+
+        .professional-badge:hover {
+            transform: scale(1.05) rotateZ(2deg);
+            box-shadow: 0 15px 35px rgba(74, 124, 89, 0.25);
+        }
+
+        .badge-emoji {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .badge-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .badge-text {
+            font-size: 0.9rem;
+            color: rgba(245, 245, 245, 0.7);
+        }
+
+        /* QUICK FACTS */
+        .facts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .fact-box {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(74, 124, 89, 0.1);
+            border-radius: 12px;
+            border-left: 4px solid var(--kelly-green);
+            transition: all 0.3s ease;
+        }
+
+        .fact-box:hover {
+            transform: translateY(-5px);
+            background: rgba(74, 124, 89, 0.15);
+        }
+
+        .fact-number {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            color: var(--corn);
+            margin-bottom: 0.5rem;
+        }
+
+        .fact-label {
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        /* FOOTER */
+        footer {
+            background: linear-gradient(135deg, var(--maroon), var(--maroon-light));
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 2px solid var(--corn);
+            margin-top: 5rem;
+        }
+
+        footer p {
+            margin-bottom: 1rem;
+            color: rgba(245, 245, 245, 0.8);
+        }
+
+        .footer-link {
+            color: var(--corn);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--corn-dark);
+        }
+
+        /* SCROLL ANIMATIONS */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero {
+                min-height: 80vh;
+                padding: 1rem;
+            }
+
+            .section {
+                padding: 3rem 1.5rem;
+            }
+
+            .cta-button {
+                display: block;
+                margin-top: 1rem;
+            }
+        }
+
+        /* DECORATIVE ELEMENTS */
+        .corner-accent {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .accent-top-left {
+            top: 0;
+            left: 0;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(227, 204, 2, 0.05) 0%, transparent 70%);
+        }
+
+        .accent-bottom-right {
+            bottom: 0;
+            right: 0;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(59, 10, 15, 0.1) 0%, transparent 70%);
+        }
+    </style>
+</head>
+<body>
+    <div class="corner-accent accent-top-left"></div>
+    <div class="corner-accent accent-bottom-right"></div>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Celebrating <span>Procurement Excellence</span></h1>
+            <p class="hero-subtitle">International Procurement Day 2026</p>
+            <div class="date-badge">Friday, April 25th, 2026</div>
+            <p style="font-size: 1.1rem; margin: 2rem 0; color: rgba(245, 245, 245, 0.8);">
+                Honor the professionals who power global commerce
+            </p>
+            <button class="cta-button" onclick="scrollToSection('why-celebrate')">Celebrate Now</button>
+        </div>
+    </section>
+
+    <!-- WHY CELEBRATE -->
+    <section class="section" id="why-celebrate">
+        <h2 class="section-title">Why We <span>Celebrate</span> Procurement</h2>
+        
+        <div class="cards-grid">
+            <div class="card fade-in">
+                <div class="card-icon">🌍</div>
+                <h3 class="card-title">Global Impact</h3>
+                <p class="card-text">Procurement professionals connect businesses, suppliers, and nations, enabling trade that transforms the world economy.</p>
+            </div>
+
+            <div class="card fade-in">
+                <div class="card-icon">⚡</div>
+                <h3 class="card-title">Strategic Drivers</h3>
+                <p class="card-text">From cost optimization to supply chain resilience, procurement leaders drive competitive advantage and organizational success.</p>
+            </div>
+
+            <div class="card fade-in">
+                <div class="card-icon">🌱</div>
+                <h3 class="card-title">Sustainability Champions</h3>
+                <p class="card-text">Procurement professionals champion ethical sourcing, environmental responsibility, and positive social impact.</p>
+            </div>
+
+            <div class="card fade-in">
+                <div class="card-icon">🤝</div>
+                <h3 class="card-title">Relationship Builders</h3>
+                <p class="card-text">They negotiate, collaborate, and build trust across borders, creating partnerships that last and thrive.</p>
+            </div>
+
+            <div class="card fade-in">
+                <div class="card-icon">💡</div>
+                <h3 class="card-title">Innovation Catalysts</h3>
+                <p class="card-text">Procurement drives innovation by sourcing cutting-edge solutions and fostering supplier excellence worldwide.</p>
+            </div>
+
+            <div class="card fade-in">
+                <div class="card-icon">🎯</div>
+                <h3 class="card-title">Risk Managers</h3>
+                <p class="card-text">They anticipate challenges, build resilience, and ensure business continuity in an increasingly complex world.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- QUICK FACTS -->
+    <section class="section">
+        <h2 class="section-title">By The <span>Numbers</span></h2>
+        
+        <div class="facts-container">
+            <div class="fact-box fade-in">
+                <div class="fact-number">$25T+</div>
+                <div class="fact-label">Global Spend Managed</div>
+            </div>
+            <div class="fact-box fade-in">
+                <div class="fact-number">195+</div>
+                <div class="fact-label">Countries Participating</div>
+            </div>
+            <div class="fact-box fade-in">
+                <div class="fact-number">5M+</div>
+                <div class="fact-label">Professionals Worldwide</div>
+            </div>
+            <div class="fact-box fade-in">
+                <div class="fact-number">1 Day</div>
+                <div class="fact-label">Global Recognition</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROFESSIONALS SPOTLIGHT -->
+    <section class="section">
+        <h2 class="section-title">Meet Your <span>Hero Roles</span></h2>
+        
+        <div class="spotlight-grid">
+            <div class="professional-badge">
+                <div class="badge-emoji">🏆</div>
+                <div class="badge-title">The Negotiator</div>
+                <div class="badge-text">Securing the best deals and maximizing value for every dollar</div>
+            </div>
+
+            <div class="professional-badge">
+                <div class="badge-emoji">🔗</div>
+                <div class="badge-title">The Connector</div>
+                <div class="badge-text">Building supply chains that link the world</div>
+            </div>
+
+            <div class="professional-badge">
+                <div class="badge-emoji">📊</div>
+                <div class="badge-title">The Analyst</div>
+                <div class="badge-text">Turning data into strategic decisions</div>
+            </div>
+
+            <div class="professional-badge">
+                <div class="badge-emoji">🛡️</div>
+                <div class="badge-title">The Guardian</div>
+                <div class="badge-text">Protecting organizations from supply chain risks</div>
+            </div>
+
+            <div class="professional-badge">
+                <div class="badge-emoji">🌟</div>
+                <div class="badge-title">The Innovator</div>
+                <div class="badge-text">Pioneering new solutions and best practices</div>
+            </div>
+
+            <div class="professional-badge">
+                <div class="badge-emoji">🚀</div>
+                <div class="badge-title">The Leader</div>
+                <div class="badge-text">Inspiring teams to transform procurement</div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- FOOTER -->
+    <footer>
+        <p>International Procurement Day 2026</p>
+        <p style="font-size: 0.9rem; color: rgba(245, 245, 245, 0.6);">
+            Celebrating the professionals who power global commerce
+        </p>
+        <p style="margin-top: 2rem;">
+            <a href="https://internationalprocurementday.com/" class="footer-link">Visit Official Site</a>
+        </p>
+        <p style="margin-top: 1rem; font-size: 0.85rem; color: rgba(245, 245, 245, 0.5);">
+            Made with passion for procurement professionals worldwide
+        </p>
+    </footer>
+
+    <script>
+        // Scroll to section smoothly
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // Trigger confetti on page load
+        function createConfetti() {
+            const colors = ['#4A7C59', '#6BA876', '#FFD700', '#355C3F'];
+            const confettiPieces = 50;
+
+            for (let i = 0; i < confettiPieces; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.width = (Math.random() * 10 + 5) + 'px';
+                    confetti.style.height = (Math.random() * 10 + 5) + 'px';
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    confetti.style.opacity = Math.random() * 0.7 + 0.3;
+                    document.body.appendChild(confetti);
+
+                    let top = -10;
+                    const speed = Math.random() * 3 + 2;
+                    const sway = (Math.random() - 0.5) * 2;
+                    const rotation = Math.random() * 360;
+                    const rotationSpeed = Math.random() * 10;
+
+                    const fall = setInterval(() => {
+                        top += speed;
+                        confetti.style.top = top + 'px';
+                        confetti.style.left = (parseFloat(confetti.style.left) + sway) + 'px';
+                        confetti.style.transform = `rotate(${rotation + top * rotationSpeed}deg)`;
+
+                        if (top > window.innerHeight) {
+                            clearInterval(fall);
+                            confetti.remove();
+                        }
+                    }, 30);
+                }, i * 30);
+            }
+        }
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Trigger confetti animation
+            createConfetti();
+
+            // Start observing fade-in elements
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
+
+            // Additional confetti burst when user scrolls to celebration section
+            window.addEventListener('scroll', () => {
+                const celebrationSection = document.getElementById('why-celebrate');
+                if (celebrationSection) {
+                    const rect = celebrationSection.getBoundingClientRect();
+                    if (rect.top < window.innerHeight && rect.top > 0 && !celebrationSection.dataset.confettiFired) {
+                        celebrationSection.dataset.confettiFired = 'true';
+                        createConfetti();
+                    }
+                }
+            }, { once: false });
+        });
+    </script>
+</body>
+</html>
