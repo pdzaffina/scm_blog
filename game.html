@@ -1,542 +1,371 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AGT RFP Pitch Game - Judge the Vendors!</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --kelly-green: #4A7C59;
-            --kelly-dark: #355C3F;
-            --kelly-light: #6BA876;
-            --accent-gold: #FFD700;
-            --accent-red: #FF4444;
-            --accent-blue: #44CCFF;
-            --bg-dark: #0a0e27;
-            --text-light: #ffffff;
-            --text-shadow: #1a1a2e;
-        }
-
-        body {
-            font-family: 'Press Start 2P', cursive;
-            background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1a3e 100%);
-            color: var(--text-light);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            overflow: hidden;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(255, 255, 255, 0.03) 0px,
-                rgba(255, 255, 255, 0.03) 1px,
-                transparent 1px,
-                transparent 2px
-            );
-            pointer-events: none;
-            z-index: 999;
-            animation: scanlines 8s linear infinite;
-        }
-
-        @keyframes scanlines {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(10px); }
-        }
-
-        .game-container {
-            width: 100%;
-            max-width: 1000px;
-            background: linear-gradient(135deg, #1a1a3e 0%, #2d1b4e 100%);
-            border: 8px solid var(--kelly-green);
-            box-shadow: 0 0 40px rgba(74, 124, 89, 0.8), inset 0 0 40px rgba(74, 124, 89, 0.2);
-            padding: 40px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .game-title {
-            text-align: center;
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            color: var(--accent-gold);
-            text-shadow: 2px 2px 0 var(--kelly-green), 4px 4px 0 var(--accent-blue);
-            animation: titlePulse 1s infinite;
-        }
-
-        @keyframes titlePulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .subtitle {
-            text-align: center;
-            font-size: 0.8rem;
-            margin-bottom: 30px;
-            color: var(--accent-blue);
-            text-shadow: 1px 1px 0 var(--kelly-dark);
-        }
-
-        .stage {
-            background: linear-gradient(to bottom, #4A4A6A 0%, #2a2a4a 100%);
-            border: 4px solid var(--accent-gold);
-            padding: 40px;
-            margin-bottom: 40px;
-            min-height: 300px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.3);
-        }
-
-        .spotlight {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: spotlightMove 4s ease-in-out infinite;
-            pointer-events: none;
-        }
-
-        @keyframes spotlightMove {
-            0%, 100% { top: -50px; left: 10%; }
-            50% { top: 50px; left: 30%; }
-        }
-
-        .vendor-section {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 40px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .vendor-character {
-            flex: 0 0 150px;
-            text-align: center;
-        }
-
-        .pixel-art {
-            width: 120px;
-            height: 120px;
-            background-size: 100%;
-            margin: 0 auto 20px;
-            image-rendering: pixelated;
-            image-rendering: crisp-edges;
-            animation: characterBounce 0.6s ease-in-out infinite;
-        }
-
-        @keyframes characterBounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .vendor-name {
-            font-size: 0.9rem;
-            color: var(--accent-gold);
-            text-shadow: 2px 2px 0 var(--kelly-dark);
-            margin-bottom: 10px;
-            word-break: break-word;
-        }
-
-        .vendor-pitch {
-            flex: 1;
-            background: rgba(0, 0, 0, 0.5);
-            border: 3px dashed var(--accent-blue);
-            padding: 20px;
-            min-height: 150px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .pitch-title {
-            font-size: 1rem;
-            color: var(--accent-gold);
-            margin-bottom: 10px;
-            text-shadow: 1px 1px 0 var(--kelly-dark);
-        }
-
-        .pitch-text {
-            font-size: 0.65rem;
-            color: var(--accent-blue);
-            line-height: 1.4;
-            text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8);
-        }
-
-        .judges-section {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .judge {
-            background: linear-gradient(135deg, var(--kelly-green), var(--kelly-dark));
-            border: 4px solid var(--accent-gold);
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 8px 0 rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.2);
-            transform: perspective(1000px) rotateY(-5deg);
-            transition: all 0.2s ease;
-        }
-
-        .judge:nth-child(2) {
-            transform: perspective(1000px) rotateY(0deg);
-        }
-
-        .judge:nth-child(3) {
-            transform: perspective(1000px) rotateY(5deg);
-        }
-
-        .judge:hover {
-            transform: scale(1.05);
-        }
-
-        .judge-name {
-            font-size: 0.85rem;
-            color: var(--text-light);
-            margin-bottom: 15px;
-            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8);
-        }
-
-        .vote-buttons {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .vote-btn {
-            flex: 1;
-            padding: 12px;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 1.2rem;
-            border: 3px solid var(--text-light);
-            background: none;
-            color: var(--text-light);
-            cursor: pointer;
-            transition: all 0.1s ease;
-            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8);
-        }
-
-        .yes-btn {
-            background: var(--kelly-light);
-            color: var(--text-light);
-        }
-
-        .yes-btn:hover {
-            background: #7ac98f;
-            transform: scale(1.1);
-            box-shadow: 0 0 20px rgba(107, 168, 118, 0.8);
-        }
-
-        .yes-btn:active {
-            transform: scale(0.95);
-        }
-
-        .no-btn {
-            background: var(--accent-red);
-            color: var(--text-light);
-        }
-
-        .no-btn:hover {
-            background: #FF6666;
-            transform: scale(1.1);
-            box-shadow: 0 0 20px rgba(255, 68, 68, 0.8);
-        }
-
-        .no-btn:active {
-            transform: scale(0.95);
-        }
-
-        .judge-status {
-            font-size: 0.7rem;
-            color: var(--accent-blue);
-            min-height: 20px;
-        }
-
-        .refresh-section {
-            text-align: center;
-        }
-
-        .refresh-btn {
-            padding: 15px 40px;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.9rem;
-            background: linear-gradient(135deg, var(--accent-gold), #FFE800);
-            border: 4px solid var(--kelly-dark);
-            color: var(--kelly-dark);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
-            box-shadow: 0 8px 0 var(--kelly-dark), inset 0 -4px 0 rgba(0, 0, 0, 0.3);
-        }
-
-        .refresh-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 0 var(--kelly-dark), inset 0 -4px 0 rgba(0, 0, 0, 0.3);
-        }
-
-        .refresh-btn:active {
-            transform: translateY(4px);
-            box-shadow: 0 2px 0 var(--kelly-dark), inset 0 -2px 0 rgba(0, 0, 0, 0.3);
-        }
-
-        .score-display {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 0.85rem;
-            color: var(--accent-gold);
-            text-shadow: 2px 2px 0 var(--kelly-dark);
-        }
-
-        .vote-animation {
-            animation: votePopup 0.6s ease-out;
-        }
-
-        @keyframes votePopup {
-            0% {
-                transform: scale(0.5);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(1);
-                opacity: 0;
-            }
-        }
-
-        .popup-vote {
-            position: fixed;
-            font-size: 2rem;
-            pointer-events: none;
-            z-index: 9999;
-            text-shadow: 2px 2px 0 var(--kelly-dark);
-            animation: popupFloat 1s ease-out forwards;
-        }
-
-        @keyframes popupFloat {
-            0% {
-                transform: translateY(0) scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100px) scale(1.5);
-                opacity: 0;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .game-container {
-                padding: 20px;
-            }
-
-            .vendor-section {
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            .pitch-text {
-                font-size: 0.55rem;
-            }
-
-            .judges-section {
-                grid-template-columns: 1fr;
-            }
-
-            .judge {
-                transform: none !important;
-            }
-
-            .game-title {
-                font-size: 1rem;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AGT RFP Pitch Game</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+--corn:#E3CC02;
+--maroon:#3B0A0F;
+--accent-red:#FF4444;
+--accent-blue:#44CCFF;
+--bg-dark:#0a0e27;
+--text-light:#ffffff;
+}
+body{font-family:'Press Start 2P',cursive;background:linear-gradient(135deg,var(--bg-dark) 0%,#1a1a3e 100%);color:var(--text-light);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;overflow:hidden;}
+body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg,rgba(255,255,255,0.03) 0px,rgba(255,255,255,0.03) 1px,transparent 1px,transparent 2px);pointer-events:none;z-index:999;animation:scanlines 8s linear infinite;}
+@keyframes scanlines{0%{transform:translateY(0);}100%{transform:translateY(10px);}}
+.game-container{width:100%;max-width:1000px;background:linear-gradient(135deg,#1a1a3e 0%,#2d1b4e 100%);border:8px solid var(--corn);box-shadow:0 0 40px rgba(227,204,2,0.5),inset 0 0 40px rgba(59,10,15,0.3);padding:40px;position:relative;z-index:1;}
+.game-title{text-align:center;font-size:1.5rem;margin-bottom:20px;color:var(--corn);text-shadow:2px 2px 0 var(--maroon),4px 4px 0 var(--accent-blue);animation:titlePulse 1s infinite;}
+@keyframes titlePulse{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+.subtitle{text-align:center;font-size:0.8rem;margin-bottom:30px;color:var(--accent-blue);text-shadow:1px 1px 0 var(--maroon);}
+.stage{background:linear-gradient(to bottom,#4A4A6A 0%,#2a2a4a 100%);border:4px solid var(--corn);padding:40px;margin-bottom:40px;min-height:300px;position:relative;overflow:hidden;box-shadow:inset 0 0 20px rgba(0,0,0,0.8),0 0 20px rgba(227,204,2,0.3);}
+.spotlight{position:absolute;width:200px;height:200px;background:radial-gradient(circle,rgba(227,204,2,0.25) 0%,transparent 70%);border-radius:50%;animation:spotlightMove 4s ease-in-out infinite;pointer-events:none;}
+@keyframes spotlightMove{0%,100%{top:-50px;left:10%;}50%{top:50px;left:30%;}}
+.vendor-section{display:flex;align-items:center;justify-content:space-between;gap:40px;position:relative;z-index:2;}
+.vendor-character{flex:0 0 150px;text-align:center;}
+.pixel-art{width:120px;height:120px;background-size:100%;margin:0 auto 20px;image-rendering:pixelated;image-rendering:crisp-edges;animation:characterBounce 0.6s ease-in-out infinite;}
+@keyframes characterBounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+.vendor-name{font-size:0.9rem;color:var(--corn);text-shadow:2px 2px 0 var(--maroon);margin-bottom:10px;word-break:break-word;}
+.vendor-pitch{flex:1;background:rgba(0,0,0,0.5);border:3px dashed var(--accent-blue);padding:20px;min-height:150px;display:flex;flex-direction:column;justify-content:center;}
+.pitch-title{font-size:1rem;color:var(--corn);margin-bottom:10px;text-shadow:1px 1px 0 var(--maroon);}
+.pitch-text{font-size:0.65rem;color:var(--accent-blue);line-height:1.4;text-shadow:1px 1px 0 rgba(0,0,0,0.8);}
+.judges-section{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:30px;}
+.judge{background:linear-gradient(135deg,var(--maroon),#5a1018);border:4px solid var(--corn);padding:16px;text-align:center;box-shadow:0 8px 0 rgba(0,0,0,0.5),inset 0 0 10px rgba(227,204,2,0.1);transition:all 0.2s ease;position:relative;}
+.judge:hover{transform:scale(1.03);}
+.judge-avatar{display:flex;justify-content:center;margin-bottom:8px;}
+.judge-avatar svg{image-rendering:pixelated;}
+.judge-desk{width:100%;background:#222244;border:2px solid #aaaacc;padding:6px 4px 4px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:4px;position:relative;}
+.x-panel{width:28px;height:24px;border:2px solid #555;border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:10px;font-family:monospace;font-weight:bold;transition:all 0.3s ease;position:relative;overflow:hidden;}
+.x-panel.off{background:#1a1a33;color:#444466;border-color:#333355;}
+.x-panel.on{background:#fff;color:#ff2200;border-color:#ff6600;box-shadow:0 0 8px #ff4400,inset 0 0 6px rgba(255,100,0,0.4);animation:xPulse 0.5s ease-out;}
+@keyframes xPulse{0%{transform:scale(1.2);}100%{transform:scale(1);}}
+.judge-name{font-size:0.75rem;color:var(--corn);margin-bottom:12px;text-shadow:2px 2px 0 rgba(0,0,0,0.8);}
+.vote-buttons{display:flex;gap:10px;margin-bottom:10px;}
+.vote-btn{flex:1;padding:12px;font-family:'Press Start 2P',cursive;font-size:1.2rem;border:3px solid var(--text-light);background:none;color:var(--text-light);cursor:pointer;transition:all 0.1s ease;}
+.yes-btn{background:#2a7a3a;color:var(--text-light);}
+.yes-btn:hover{background:#3a9a4a;transform:scale(1.1);box-shadow:0 0 20px rgba(60,160,80,0.8);}
+.yes-btn:active{transform:scale(0.95);}
+.no-btn{background:var(--accent-red);color:var(--text-light);}
+.no-btn:hover{background:#FF6666;transform:scale(1.1);box-shadow:0 0 20px rgba(255,68,68,0.8);}
+.no-btn:active{transform:scale(0.95);}
+.judge-status{font-size:0.65rem;color:var(--accent-blue);min-height:20px;}
+.refresh-section{text-align:center;}
+.refresh-btn{padding:15px 40px;font-family:'Press Start 2P',cursive;font-size:0.9rem;background:linear-gradient(135deg,var(--corn),#FFE800);border:4px solid var(--maroon);color:var(--maroon);cursor:pointer;transition:all 0.2s ease;box-shadow:0 8px 0 var(--maroon),inset 0 -4px 0 rgba(0,0,0,0.3);}
+.refresh-btn:hover{transform:translateY(-2px);box-shadow:0 10px 0 var(--maroon);}
+.refresh-btn:active{transform:translateY(4px);box-shadow:0 2px 0 var(--maroon);}
+.score-display{margin-top:20px;text-align:center;font-size:0.85rem;color:var(--corn);text-shadow:2px 2px 0 var(--maroon);}
+.popup-vote{position:fixed;font-size:2rem;pointer-events:none;z-index:9999;animation:popupFloat 1s ease-out forwards;}
+@keyframes popupFloat{0%{transform:translateY(0) scale(1);opacity:1;}100%{transform:translateY(-100px) scale(1.5);opacity:0;}}
+@media(max-width:768px){.game-container{padding:20px;}.vendor-section{flex-direction:column;gap:20px;}.pitch-text{font-size:0.55rem;}.judges-section{grid-template-columns:1fr;}.game-title{font-size:1rem;}}
+</style>
 </head>
 <body>
-    <div class="game-container">
-        <div class="game-title">🎮 AGT RFP BATTLES 🎮</div>
-        <div class="subtitle">JUDGE THE VENDOR PITCHES!</div>
+<div class="game-container">
+<div class="game-title">&#127918; AGT RFP BATTLES &#127918;</div>
+<div class="subtitle">JUDGE THE VENDOR PITCHES!</div>
 
-        <div class="stage">
-            <div class="spotlight"></div>
-            <div class="vendor-section">
-                <div class="vendor-character">
-                    <div class="pixel-art" id="vendorArt"></div>
-                    <div class="vendor-name" id="vendorName">Vendor Name</div>
-                </div>
-                <div class="vendor-pitch">
-                    <div class="pitch-title" id="pitchTitle">PITCH TITLE</div>
-                    <div class="pitch-text" id="pitchText">Pitch description goes here...</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="judges-section">
-            <div class="judge">
-                <div class="judge-name">Judge 1<br>SIMON</div>
-                <div class="vote-buttons">
-                    <button class="vote-btn yes-btn" onclick="judgeVote(0, true)">✓</button>
-                    <button class="vote-btn no-btn" onclick="judgeVote(0, false)">✗</button>
-                </div>
-                <div class="judge-status" id="judge0Status"></div>
-            </div>
-
-            <div class="judge">
-                <div class="judge-name">Judge 2<br>HOWIE</div>
-                <div class="vote-buttons">
-                    <button class="vote-btn yes-btn" onclick="judgeVote(1, true)">✓</button>
-                    <button class="vote-btn no-btn" onclick="judgeVote(1, false)">✗</button>
-                </div>
-                <div class="judge-status" id="judge1Status"></div>
-            </div>
-
-            <div class="judge">
-                <div class="judge-name">Judge 3<br>SOFIA</div>
-                <div class="vote-buttons">
-                    <button class="vote-btn yes-btn" onclick="judgeVote(2, true)">✓</button>
-                    <button class="vote-btn no-btn" onclick="judgeVote(2, false)">✗</button>
-                </div>
-                <div class="judge-status" id="judge2Status"></div>
-            </div>
-        </div>
-
-        <div class="score-display" id="scoreDisplay"></div>
-
-        <div class="refresh-section">
-            <button class="refresh-btn" onclick="location.reload()">⟳ NEXT VENDOR</button>
-        </div>
+<div class="stage">
+  <div class="spotlight"></div>
+  <div class="vendor-section">
+    <div class="vendor-character">
+      <div class="pixel-art" id="vendorArt"></div>
+      <div class="vendor-name" id="vendorName">Vendor Name</div>
     </div>
+    <div class="vendor-pitch">
+      <div class="pitch-title" id="pitchTitle">PITCH TITLE</div>
+      <div class="pitch-text" id="pitchText">Pitch description goes here...</div>
+    </div>
+  </div>
+</div>
 
-    <script>
-        // Scenario data - 3 distinct pitch scenarios
-        const scenarios = [
-            {
-                name: "QuantumBid Pro",
-                title: "AI-POWERED RFP ANALYSIS",
-                pitch: "We use quantum machine learning to analyze your RFPs in nanoseconds! Our patented algorithm reduces procurement time by 99.9% and costs by 500%. Perfect for enterprise solutions!",
-                vendor: 0
-            },
-            {
-                name: "SustaiSource Inc",
-                title: "ECO-FRIENDLY SUPPLY CHAIN",
-                pitch: "100% sustainable procurement! Our green suppliers reduce carbon footprint by 200% (net carbon negative). Every purchase plants 1000 trees. Be green, be mean, be profitable!",
-                vendor: 1
-            },
-            {
-                name: "BlockChain Buys",
-                title: "CRYPTO RFP SOLUTION",
-                pitch: "Decentralized procurement on the blockchain! Smart contracts execute automatically. NFT-based vendor verification. Immutable audit trails. Web3 is the future of buying!",
-                vendor: 2
-            }
-        ];
+<div class="judges-section">
 
-        // Judge responses based on scenario
-        const judgeReactions = {
-            0: {
-                yes: ["BRILLIANT!", "YES YES YES!", "GENIUS!", "I LOVE IT!"],
-                no: ["TERRIBLE!", "NO WAY!", "AWFUL!", "DISASTER!"]
-            },
-            1: {
-                yes: ["WONDERFUL!", "FANTASTIC!", "IMPRESSIVE!", "AMAZING!"],
-                no: ["NOT GOOD!", "NOPE!", "FAIL!", "SORRY!"]
-            },
-            2: {
-                yes: ["BEAUTIFUL!", "PERFECT!", "EXCELLENT!", "LOVE IT!"],
-                no: ["NOT HAPPY!", "REJECT!", "NOPE!", "SORRY!"]
-            }
-        };
+  <!-- SIMON - black t-shirt, stern face, short dark hair -->
+  <div class="judge">
+    <div class="judge-avatar">
+      <svg width="80" height="100" viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated">
+        <!-- hair -->
+        <rect x="24" y="8" width="32" height="8" fill="#1a1a1a"/>
+        <rect x="20" y="14" width="40" height="4" fill="#1a1a1a"/>
+        <!-- head -->
+        <rect x="20" y="18" width="40" height="32" fill="#c8956e"/>
+        <!-- ears -->
+        <rect x="16" y="26" width="4" height="8" fill="#c8956e"/>
+        <rect x="60" y="26" width="4" height="8" fill="#c8956e"/>
+        <!-- eyes - stern narrow -->
+        <rect x="28" y="28" width="10" height="5" fill="#1a1a1a"/>
+        <rect x="42" y="28" width="10" height="5" fill="#1a1a1a"/>
+        <rect x="30" y="29" width="6" height="3" fill="#3a2010"/>
+        <rect x="44" y="29" width="6" height="3" fill="#3a2010"/>
+        <!-- eyebrows furrowed -->
+        <rect x="26" y="25" width="14" height="2" fill="#1a1a1a"/>
+        <rect x="40" y="25" width="14" height="2" fill="#1a1a1a"/>
+        <!-- nose -->
+        <rect x="36" y="36" width="4" height="6" fill="#a8755e"/>
+        <rect x="32" y="40" width="16" height="2" fill="#a8755e"/>
+        <!-- mouth - flat line -->
+        <rect x="30" y="46" width="20" height="3" fill="#a8755e"/>
+        <rect x="32" y="44" width="16" height="2" fill="#7a4535"/>
+        <!-- neck -->
+        <rect x="32" y="50" width="16" height="8" fill="#c8956e"/>
+        <!-- black t-shirt body -->
+        <rect x="16" y="58" width="48" height="36" fill="#111111"/>
+        <!-- shirt collar V -->
+        <rect x="32" y="58" width="16" height="4" fill="#c8956e"/>
+        <rect x="34" y="62" width="12" height="4" fill="#111111"/>
+        <rect x="36" y="66" width="8" height="3" fill="#111111"/>
+        <!-- arms -->
+        <rect x="10" y="60" width="8" height="28" fill="#111111"/>
+        <rect x="62" y="60" width="8" height="28" fill="#111111"/>
+        <!-- hands -->
+        <rect x="8" y="88" width="10" height="6" fill="#c8956e"/>
+        <rect x="62" y="88" width="10" height="6" fill="#c8956e"/>
+      </svg>
+    </div>
+    <div class="judge-desk">
+      <div class="x-panel off" id="x0a">X</div>
+      <div class="x-panel off" id="x0b">X</div>
+      <div class="x-panel off" id="x0c">X</div>
+    </div>
+    <div class="judge-name">SIMON</div>
+    <div class="vote-buttons">
+      <button class="vote-btn yes-btn" onclick="judgeVote(0,true)">&#10003;</button>
+      <button class="vote-btn no-btn" onclick="judgeVote(0,false)">&#10007;</button>
+    </div>
+    <div class="judge-status" id="judge0Status"></div>
+  </div>
 
-        // ASCII pixel art for vendors
-        const vendorArts = [
-            "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect x='40' y='20' width='40' height='40' fill='%234A7C59'/%3E%3Crect x='35' y='15' width='50' height='50' fill='none' stroke='%23FFD700' stroke-width='2'/%3E%3Crect x='50' y='35' width='8' height='8' fill='%23FFD700'/%3E%3Crect x='62' y='35' width='8' height='8' fill='%23FFD700'/%3E%3Crect x='50' y='50' width='20' height='5' fill='%23FFD700'/%3E%3Crect x='30' y='65' width='60' height='40' fill='%234A7C59'/%3E%3Crect x='35' y='65' width='15' height='30' fill='%23355C3F'/%3E%3Crect x='70' y='65' width='15' height='30' fill='%23355C3F'/%3E%3C/svg%3E",
-            "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect x='35' y='20' width='50' height='35' fill='%236BA876'/%3E%3Crect x='30' y='15' width='60' height='45' fill='none' stroke='%2344CCFF' stroke-width='2'/%3E%3Crect x='45' y='30' width='10' height='10' fill='%2344CCFF'/%3E%3Crect x='65' y='30' width='10' height='10' fill='%2344CCFF'/%3E%3Crect x='48' y='50' width='24' height='8' fill='%2344CCFF'/%3E%3Crect x='25' y='65' width='70' height='40' fill='%236BA876'/%3E%3Crect x='25' y='65' width='18' height='35' fill='%23355C3F'/%3E%3Crect x='77' y='65' width='18' height='35' fill='%23355C3F'/%3E%3C/svg%3E",
-            "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect x='38' y='15' width='44' height='40' fill='%23FFD700'/%3E%3Crect x='33' y='10' width='54' height='50' fill='none' stroke='%23FF4444' stroke-width='2'/%3E%3Crect x='48' y='25' width='12' height='12' fill='%23FF4444'/%3E%3Crect x='60' y='25' width='12' height='12' fill='%23FF4444'/%3E%3Crect x='50' y='45' width='20' height='6' fill='%23FF4444'/%3E%3Crect x='28' y='70' width='64' height='35' fill='%23FFD700'/%3E%3Crect x='28' y='70' width='16' height='30' fill='%23FF4444'/%3E%3Crect x='76' y='70' width='16' height='30' fill='%23FF4444'/%3E%3C/svg%3E"
-        ];
+  <!-- HEIDI - long blonde hair, bright outfit -->
+  <div class="judge">
+    <div class="judge-avatar">
+      <svg width="80" height="100" viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated">
+        <!-- long blonde hair back -->
+        <rect x="16" y="14" width="6" height="50" fill="#e8c040"/>
+        <rect x="58" y="14" width="6" height="50" fill="#e8c040"/>
+        <rect x="18" y="54" width="8" height="30" fill="#e8c040"/>
+        <rect x="54" y="54" width="8" height="30" fill="#e8c040"/>
+        <!-- hair top -->
+        <rect x="22" y="6" width="36" height="10" fill="#e8c040"/>
+        <rect x="18" y="12" width="44" height="8" fill="#e8c040"/>
+        <!-- head -->
+        <rect x="22" y="18" width="36" height="30" fill="#e0b090"/>
+        <!-- ears -->
+        <rect x="18" y="26" width="4" height="8" fill="#e0b090"/>
+        <rect x="58" y="26" width="4" height="8" fill="#e0b090"/>
+        <!-- earrings -->
+        <rect x="18" y="34" width="4" height="4" fill="#e3cc02"/>
+        <rect x="58" y="34" width="4" height="4" fill="#e3cc02"/>
+        <!-- eyes - bright wide -->
+        <rect x="28" y="26" width="10" height="6" fill="#ffffff"/>
+        <rect x="42" y="26" width="10" height="6" fill="#ffffff"/>
+        <rect x="30" y="27" width="6" height="4" fill="#4466cc"/>
+        <rect x="44" y="27" width="6" height="4" fill="#4466cc"/>
+        <rect x="31" y="28" width="3" height="2" fill="#111"/>
+        <rect x="45" y="28" width="3" height="2" fill="#111"/>
+        <rect x="32" y="27" width="2" height="2" fill="#ffffff"/>
+        <rect x="46" y="27" width="2" height="2" fill="#ffffff"/>
+        <!-- eyelashes -->
+        <rect x="28" y="24" width="2" height="2" fill="#1a1a1a"/>
+        <rect x="32" y="24" width="2" height="2" fill="#1a1a1a"/>
+        <rect x="36" y="24" width="2" height="2" fill="#1a1a1a"/>
+        <rect x="42" y="24" width="2" height="2" fill="#1a1a1a"/>
+        <rect x="46" y="24" width="2" height="2" fill="#1a1a1a"/>
+        <rect x="50" y="24" width="2" height="2" fill="#1a1a1a"/>
+        <!-- nose -->
+        <rect x="37" y="34" width="6" height="4" fill="#c0907a"/>
+        <!-- smile -->
+        <rect x="30" y="42" width="20" height="2" fill="#cc5566"/>
+        <rect x="28" y="40" width="4" height="4" fill="#e0b090"/>
+        <rect x="48" y="40" width="4" height="4" fill="#e0b090"/>
+        <rect x="32" y="44" width="16" height="2" fill="#cc5566"/>
+        <!-- teeth -->
+        <rect x="32" y="42" width="16" height="4" fill="#ffffff"/>
+        <!-- neck -->
+        <rect x="34" y="48" width="12" height="8" fill="#e0b090"/>
+        <!-- bright pink/magenta top -->
+        <rect x="18" y="56" width="44" height="38" fill="#dd3388"/>
+        <!-- neckline -->
+        <rect x="32" y="56" width="16" height="6" fill="#e0b090"/>
+        <rect x="34" y="62" width="12" height="4" fill="#dd3388"/>
+        <!-- arms -->
+        <rect x="10" y="58" width="10" height="26" fill="#dd3388"/>
+        <rect x="60" y="58" width="10" height="26" fill="#dd3388"/>
+        <!-- hands -->
+        <rect x="8" y="84" width="12" height="6" fill="#e0b090"/>
+        <rect x="60" y="84" width="12" height="6" fill="#e0b090"/>
+      </svg>
+    </div>
+    <div class="judge-desk">
+      <div class="x-panel off" id="x1a">X</div>
+      <div class="x-panel off" id="x1b">X</div>
+      <div class="x-panel off" id="x1c">X</div>
+    </div>
+    <div class="judge-name">HEIDI</div>
+    <div class="vote-buttons">
+      <button class="vote-btn yes-btn" onclick="judgeVote(1,true)">&#10003;</button>
+      <button class="vote-btn no-btn" onclick="judgeVote(1,false)">&#10007;</button>
+    </div>
+    <div class="judge-status" id="judge1Status"></div>
+  </div>
 
-        let currentScenario;
-        let judgeVotes = [null, null, null];
+  <!-- HOWIE - bald, goatee, button-up shirt -->
+  <div class="judge">
+    <div class="judge-avatar">
+      <svg width="80" height="100" viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg" style="image-rendering:pixelated">
+        <!-- bald head top -->
+        <rect x="24" y="10" width="32" height="6" fill="#d4956e"/>
+        <rect x="20" y="14" width="40" height="4" fill="#d4956e"/>
+        <!-- head -->
+        <rect x="18" y="18" width="44" height="32" fill="#d4956e"/>
+        <!-- ears -->
+        <rect x="14" y="26" width="4" height="8" fill="#d4956e"/>
+        <rect x="62" y="26" width="4" height="8" fill="#d4956e"/>
+        <!-- eyes friendly -->
+        <rect x="26" y="28" width="12" height="7" fill="#ffffff"/>
+        <rect x="42" y="28" width="12" height="7" fill="#ffffff"/>
+        <rect x="29" y="29" width="6" height="5" fill="#5b3a1a"/>
+        <rect x="45" y="29" width="6" height="5" fill="#5b3a1a"/>
+        <rect x="30" y="30" width="3" height="3" fill="#1a0a00"/>
+        <rect x="46" y="30" width="3" height="3" fill="#1a0a00"/>
+        <rect x="30" y="29" width="2" height="2" fill="#ffffff"/>
+        <rect x="46" y="29" width="2" height="2" fill="#ffffff"/>
+        <!-- eyebrows -->
+        <rect x="26" y="25" width="12" height="2" fill="#5b3a1a"/>
+        <rect x="42" y="25" width="12" height="2" fill="#5b3a1a"/>
+        <!-- nose wide -->
+        <rect x="35" y="36" width="10" height="6" fill="#b87558"/>
+        <rect x="32" y="40" width="16" height="2" fill="#b87558"/>
+        <!-- goatee smile area -->
+        <rect x="28" y="44" width="24" height="6" fill="#8b5a3a"/>
+        <!-- goatee dark -->
+        <rect x="30" y="44" width="20" height="8" fill="#3a2010"/>
+        <!-- smile through goatee -->
+        <rect x="32" y="46" width="16" height="4" fill="#cc7755"/>
+        <!-- neck -->
+        <rect x="32" y="50" width="16" height="8" fill="#d4956e"/>
+        <!-- navy button-up shirt -->
+        <rect x="16" y="58" width="48" height="36" fill="#1a2f6e"/>
+        <!-- collar -->
+        <rect x="30" y="58" width="8" height="8" fill="#d4956e"/>
+        <rect x="42" y="58" width="8" height="8" fill="#d4956e"/>
+        <rect x="30" y="58" width="20" height="4" fill="#1a2f6e"/>
+        <!-- buttons -->
+        <rect x="38" y="62" width="4" height="2" fill="#ffffff"/>
+        <rect x="38" y="68" width="4" height="2" fill="#ffffff"/>
+        <rect x="38" y="74" width="4" height="2" fill="#ffffff"/>
+        <rect x="38" y="80" width="4" height="2" fill="#ffffff"/>
+        <!-- arms -->
+        <rect x="8" y="58" width="10" height="30" fill="#1a2f6e"/>
+        <rect x="62" y="58" width="10" height="30" fill="#1a2f6e"/>
+        <!-- hands -->
+        <rect x="6" y="88" width="12" height="6" fill="#d4956e"/>
+        <rect x="62" y="88" width="12" height="6" fill="#d4956e"/>
+      </svg>
+    </div>
+    <div class="judge-desk">
+      <div class="x-panel off" id="x2a">X</div>
+      <div class="x-panel off" id="x2b">X</div>
+      <div class="x-panel off" id="x2c">X</div>
+    </div>
+    <div class="judge-name">HOWIE</div>
+    <div class="vote-buttons">
+      <button class="vote-btn yes-btn" onclick="judgeVote(2,true)">&#10003;</button>
+      <button class="vote-btn no-btn" onclick="judgeVote(2,false)">&#10007;</button>
+    </div>
+    <div class="judge-status" id="judge2Status"></div>
+  </div>
 
-        function initGame() {
-            currentScenario = scenarios[Math.floor(Math.random() * scenarios.length)];
-            judgeVotes = [null, null, null];
+</div>
 
-            // Set vendor info
-            document.getElementById('vendorName').textContent = currentScenario.name;
-            document.getElementById('pitchTitle').textContent = currentScenario.title;
-            document.getElementById('pitchText').textContent = currentScenario.pitch;
-            document.getElementById('vendorArt').style.backgroundImage = `url('${vendorArts[currentScenario.vendor]}')`;
+<div class="score-display" id="scoreDisplay"></div>
 
-            // Clear judge status
-            for (let i = 0; i < 3; i++) {
-                document.getElementById(`judge${i}Status`).textContent = '';
-            }
-            document.getElementById('scoreDisplay').textContent = '';
-        }
+<div class="refresh-section">
+  <button class="refresh-btn" onclick="location.reload()">&#8635; NEXT VENDOR</button>
+</div>
+</div>
 
-        function judgeVote(judgeIndex, isYes) {
-            judgeVotes[judgeIndex] = isYes;
+<script>
+const scenarios=[
+  {name:"QuantumBid Pro",title:"AI-POWERED RFP ANALYSIS",pitch:"We use quantum machine learning to analyze your RFPs in nanoseconds! Our patented algorithm reduces procurement time by 99.9% and costs by 500%. Perfect for enterprise solutions!",vendor:0},
+  {name:"SustaiSource Inc",title:"ECO-FRIENDLY SUPPLY CHAIN",pitch:"100% sustainable procurement! Our green suppliers reduce carbon footprint by 200% (net carbon negative). Every purchase plants 1000 trees. Be green, be mean, be profitable!",vendor:1},
+  {name:"BlockChain Buys",title:"CRYPTO RFP SOLUTION",pitch:"Decentralized procurement on the blockchain! Smart contracts execute automatically. NFT-based vendor verification. Immutable audit trails. Web3 is the future of buying!",vendor:2}
+];
+const judgeReactions={
+  0:{yes:["BRILLIANT!","YES YES YES!","GENIUS!","I LOVE IT!"],no:["TERRIBLE!","NO WAY!","AWFUL!","DISASTER!"]},
+  1:{yes:["WONDERFUL!","FANTASTIC!","IMPRESSIVE!","AMAZING!"],no:["NOT GOOD!","NOPE!","FAIL!","SORRY!"]},
+  2:{yes:["GREAT!","FANTASTIC!","IMPRESSIVE!","AMAZING!"],no:["NOT GOOD!","NOPE!","FAIL!","SORRY!"]}
+};
+const vendorArts=[
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect x='40' y='20' width='40' height='40' fill='%234A7C59'/%3E%3Crect x='35' y='15' width='50' height='50' fill='none' stroke='%23E3CC02' stroke-width='2'/%3E%3Crect x='50' y='35' width='8' height='8' fill='%23E3CC02'/%3E%3Crect x='62' y='35' width='8' height='8' fill='%23E3CC02'/%3E%3Crect x='50' y='50' width='20' height='5' fill='%23E3CC02'/%3E%3Crect x='30' y='65' width='60' height='40' fill='%234A7C59'/%3E%3Crect x='35' y='65' width='15' height='30' fill='%233B0A0F'/%3E%3Crect x='70' y='65' width='15' height='30' fill='%233B0A0F'/%3E%3C/svg%3E",
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect x='35' y='20' width='50' height='35' fill='%236BA876'/%3E%3Crect x='30' y='15' width='60' height='45' fill='none' stroke='%2344CCFF' stroke-width='2'/%3E%3Crect x='45' y='30' width='10' height='10' fill='%2344CCFF'/%3E%3Crect x='65' y='30' width='10' height='10' fill='%2344CCFF'/%3E%3Crect x='48' y='50' width='24' height='8' fill='%2344CCFF'/%3E%3Crect x='25' y='65' width='70' height='40' fill='%236BA876'/%3E%3Crect x='25' y='65' width='18' height='35' fill='%233B0A0F'/%3E%3Crect x='77' y='65' width='18' height='35' fill='%233B0A0F'/%3E%3C/svg%3E",
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect x='38' y='15' width='44' height='40' fill='%23E3CC02'/%3E%3Crect x='33' y='10' width='54' height='50' fill='none' stroke='%23FF4444' stroke-width='2'/%3E%3Crect x='48' y='25' width='12' height='12' fill='%23FF4444'/%3E%3Crect x='60' y='25' width='12' height='12' fill='%23FF4444'/%3E%3Crect x='50' y='45' width='20' height='6' fill='%23FF4444'/%3E%3Crect x='28' y='70' width='64' height='35' fill='%23E3CC02'/%3E%3Crect x='28' y='70' width='16' height='30' fill='%23FF4444'/%3E%3Crect x='76' y='70' width='16' height='30' fill='%23FF4444'/%3E%3C/svg%3E"
+];
+let currentScenario;
+let judgeVotes=[null,null,null];
 
-            const reaction = isYes ? 
-                judgeReactions[judgeIndex].yes[Math.floor(Math.random() * judgeReactions[judgeIndex].yes.length)]:
-                judgeReactions[judgeIndex].no[Math.floor(Math.random() * judgeReactions[judgeIndex].no.length)];
+function lightUpX(judgeIndex){
+  const panels=[`x${judgeIndex}a`,`x${judgeIndex}b`,`x${judgeIndex}c`];
+  panels.forEach((id,i)=>{
+    setTimeout(()=>{
+      const el=document.getElementById(id);
+      el.classList.remove('off');
+      el.classList.add('on');
+    },i*120);
+  });
+}
+function dimX(judgeIndex){
+  ['a','b','c'].forEach(s=>{
+    const el=document.getElementById(`x${judgeIndex}${s}`);
+    el.classList.remove('on');
+    el.classList.add('off');
+  });
+}
 
-            const emoji = isYes ? '✓' : '✗';
-            const color = isYes ? '#6BA876' : '#FF4444';
+function initGame(){
+  currentScenario=scenarios[Math.floor(Math.random()*scenarios.length)];
+  judgeVotes=[null,null,null];
+  document.getElementById('vendorName').textContent=currentScenario.name;
+  document.getElementById('pitchTitle').textContent=currentScenario.title;
+  document.getElementById('pitchText').textContent=currentScenario.pitch;
+  document.getElementById('vendorArt').style.backgroundImage=`url('${vendorArts[currentScenario.vendor]}')`;
+  for(let i=0;i<3;i++){
+    document.getElementById(`judge${i}Status`).textContent='';
+    dimX(i);
+  }
+  document.getElementById('scoreDisplay').textContent='';
+}
 
-            document.getElementById(`judge${judgeIndex}Status`).textContent = reaction;
-            document.getElementById(`judge${judgeIndex}Status`).style.color = color;
+function judgeVote(judgeIndex,isYes){
+  judgeVotes[judgeIndex]=isYes;
+  const reactions=judgeReactions[judgeIndex];
+  const reaction=isYes?reactions.yes[Math.floor(Math.random()*reactions.yes.length)]:reactions.no[Math.floor(Math.random()*reactions.no.length)];
+  const color=isYes?'#3aaa4a':'#FF4444';
+  document.getElementById(`judge${judgeIndex}Status`).textContent=reaction;
+  document.getElementById(`judge${judgeIndex}Status`).style.color=color;
+  if(!isYes){lightUpX(judgeIndex);}else{dimX(judgeIndex);}
+  const popup=document.createElement('div');
+  popup.className='popup-vote';
+  popup.textContent=isYes?'&#10003;':'&#10007;';
+  popup.style.color=color;
+  popup.style.left=(judgeIndex*33+15)+'%';
+  popup.style.top='50%';
+  document.body.appendChild(popup);
+  setTimeout(()=>popup.remove(),1000);
+  if(judgeVotes.every(v=>v!==null)){displayFinalScore();}
+}
 
-            // Create floating vote popup
-            const popup = document.createElement('div');
-            popup.className = 'popup-vote';
-            popup.textContent = emoji;
-            popup.style.color = color;
-            popup.style.left = (judgeIndex * 33 + 15) + '%';
-            popup.style.top = '50%';
-            document.body.appendChild(popup);
+function displayFinalScore(){
+  const yesCount=judgeVotes.filter(v=>v===true).length;
+  const messages=["&#127881; UNANIMOUS YES! VENDOR APPROVED!","&#128077; 2 YES! MOVING FORWARD!","&#9888;&#65039; MIXED VOTES! BACK TO DRAWING BOARD!","&#10060; REJECTED! TRY AGAIN NEXT TIME!"];
+  const idx=yesCount===3?0:yesCount===2?1:yesCount===1?2:3;
+  document.getElementById('scoreDisplay').innerHTML=messages[idx];
+}
 
-            setTimeout(() => popup.remove(), 1000);
-
-            // Check if all judges voted
-            if (judgeVotes.every(vote => vote !== null)) {
-                displayFinalScore();
-            }
-        }
-
-        function displayFinalScore() {
-            const yesCount = judgeVotes.filter(v => v === true).length;
-            const messages = [
-                "🎉 UNANIMOUS YES! VENDOR APPROVED!",
-                "👍 2 YES! MOVING FORWARD!",
-                "⚠️ MIXED VOTES! BACK TO DRAWING BOARD!",
-                "❌ REJECTED! TRY AGAIN NEXT TIME!"
-            ];
-
-            const messageIndex = yesCount === 3 ? 0 : yesCount === 2 ? 1 : yesCount === 1 ? 2 : 3;
-            document.getElementById('scoreDisplay').textContent = messages[messageIndex];
-        }
-
-        // Initialize on load
-        window.addEventListener('load', initGame);
-    </script>
+window.addEventListener('load',initGame);
+</script>
 </body>
 </html>
